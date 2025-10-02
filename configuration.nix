@@ -8,11 +8,23 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./modules/syncthing.nix
     ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+  # boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = [
+    "initcall_blacklist=simpledrm_-platform_driver_init"
+    "psmouse.synaptics_intertouch=0"
+  ];
+  boot.loader.grub = {
+    enable = true;
+    device = "nodev";
+    efiSupport = true;
+    useOSProber = true;
+    theme = /etc/nixos/grub-themes/hollow-knight-grub-theme/hollow-grub;
+  };
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -103,6 +115,15 @@
     wget
     git
     obsidian
+    syncthing
+    cmatrix
+    vscode
+    python314
+    gcc
+    poetry
+    swi-prolog
+    vlc
+    sonic-pi
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
