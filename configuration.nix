@@ -35,6 +35,7 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
   # Set your time zone.
   time.timeZone = "America/Sao_Paulo";
@@ -96,7 +97,7 @@
   users.users.gathddu = {
     isNormalUser = true;
     description = "Jess";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker"];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -124,7 +125,29 @@
     swi-prolog
     vlc
     sonic-pi
+    discord
+    jdk17
+    stremio
+    reaper
+    kitty
+    nodejs_24
+    maven
   ];
+
+  virtualisation.docker.enable = true;
+  virtualisation.docker.storageDriver = "btrfs";
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
+  virtualisation.docker.daemon.settings = {
+    data-root = "/home/gathddu/Documents/docker";
+  };
+
+  services.mysql = {
+    enable = true;
+    package = pkgs.mariadb;
+};
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
